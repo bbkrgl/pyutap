@@ -2,11 +2,14 @@
 
 import cppyy
 
+cppyy.add_library_path("/usr/lib")
 cppyy.add_library_path("/usr/local/lib")
+cppyy.add_include_path("/usr/local/include")
 cppyy.add_include_path("/usr/include/libxml2")
 
 cppyy.load_library("libutap")
 
+# TODO: Filter out unused ones
 cppyy.include("utap/abstractbuilder.h")
 cppyy.include("utap/builder.h")
 cppyy.include("utap/common.h")
