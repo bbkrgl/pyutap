@@ -1,5 +1,5 @@
 # pyutap
-Wrapper library for [libutap](https://github.com/UPPAALModelChecker/utap).
+Python wrapper library for [libutap](https://github.com/UPPAALModelChecker/utap).
 
 To be able to use this library, libutap has to be built dynamically.
 
