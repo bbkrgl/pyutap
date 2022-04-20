@@ -36,6 +36,8 @@ from cppyy.gbl import parseXMLFile
 from cppyy.gbl import parseExpression
 from cppyy.gbl import writeXMLFile
 
+from . import verify
+
 # TODO: Add useful functions
 # TODO: Additional pythonizations
 
