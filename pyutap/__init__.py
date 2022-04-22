@@ -37,20 +37,10 @@ from cppyy.gbl import parseExpression
 from cppyy.gbl import writeXMLFile
 
 from . import verify
+from . import path_analysis
 
 # TODO: Add useful functions
 # TODO: Additional pythonizations
-
 # TODO: Implement compute clock constraints
-#def get_clocks(system, path):
-#    res = []
-#    for element in path:
-#        constraints = get_constraints(system) # get constraints
-#        for c in constraints:
-#            pass # TODO: Check if constraint
-
-#def compute_clock_constraints(ta_system):
-#    pass
-
 # TODO: Is path realizable
 # TODO: Is there a parameter valuation to make path realizable
