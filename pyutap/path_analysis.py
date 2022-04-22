@@ -1,4 +1,5 @@
 from pyutap import *
+Constants = UTAP.Constants
 
 # Checks if given path exists
 def path_exists(path): # Path -> edge list
