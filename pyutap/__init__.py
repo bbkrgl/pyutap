@@ -39,8 +39,31 @@ from cppyy.gbl import writeXMLFile
 from . import verify
 from . import path_analysis
 
-# TODO: Add useful functions
-# TODO: Additional pythonizations
+# TODO: Add useful functions, additional pythonizations
+
+# Import functions from a different file?
+# Convert std::list, std::deque or other non-indexable types to python list
+def stdlist_to_list(stdlist):
+	return [x for x in stdlist]
+
+# Returns the set of symbols in an expression
+def get_symbols(expression):
+        res = set()
+        if (expression.getSize() == 0):
+                if (expression.getKind() == Constants.IDENTIFIER):
+                        res.add(expression.toString())
+                        return res
+                return res
+
+        for i in range(expression.getSize()):
+                res = res.union(get_symbols(expression[i]))
+
+        return res
+
+# Change the value that the given expression has at a given index
+def change_expression_value(expression, newval, index=0):
+        expression[index] = expression[index].createConstant(newval, expression.getPosition())
+
 # TODO: Implement compute clock constraints
 # TODO: Is path realizable
 # TODO: Is there a parameter valuation to make path realizable

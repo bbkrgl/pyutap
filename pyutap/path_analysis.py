@@ -8,20 +8,6 @@ def path_exists(path): # Path -> edge list
                         return False
         return True
 
-# Returns the set of symbols in an expression
-def get_symbols(expression):
-        res = set()
-        if (expression.getSize() == 0):
-                if (expression.getKind() == Constants.IDENTIFIER):
-                        res.add(expression.toString())
-                        return res
-                return res
-
-        for i in range(expression.getSize()):
-                res = res.union(get_symbols(expression[i]))
-
-        return res
-
 # Returns the set of clocks used in the given path
 def find_used_clocks(path):
         res = set()
