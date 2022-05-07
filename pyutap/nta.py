@@ -1,5 +1,7 @@
-import errno, os
+import errno
+import os
 from pyutap import *
+
 
 class TemplateHelper:
 	def __init__(self, template):
@@ -17,8 +19,9 @@ class TemplateHelper:
 	def getTemplateObject(self):
 		return self.template
 
+
 class NTAHelper:
-	def __init__(self, path, name = "nta"):
+	def __init__(self, path, name="nta"):
 		self.name = name
 		self.ta_system = UTAP.TimedAutomataSystem()
 
@@ -26,16 +29,21 @@ class NTAHelper:
 		if t != 0:
 			raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
 
-		self.declarations = self.ta_system.getGlobals() # Global declarations, maybe helper class?
+		# Global declarations, maybe helper class?
+		self.declarations = self.ta_system.getGlobals()
 
 		self.templates = []
 		for template in self.ta_system.getTemplates():
 			self.templates.append(TemplateHelper(template))
-		
-		self.queries = self.ta_system.getQueries() # Queries
 
-	def writeToXML(self):
-		t = writeXMLFile(self.name + ".xml", self.ta_system)
+		self.queries = self.ta_system.getQueries()  # Queries
+
+	def writeToXML(self, path=""):
+		if path != "":
+			t = writeXMLFile(path, self.ta_system)
+		else:
+			t = writeXMLFile(self.name + ".xml", self.ta_system)
+
 		if t != 0:
 			raise Exception("Could not write to file.")
 

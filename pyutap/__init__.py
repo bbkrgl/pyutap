@@ -28,6 +28,7 @@ cppyy.include("utap/type.h")
 cppyy.include("utap/utap.h")
 cppyy.include("utap/xmlwriter.h")
 
+
 from cppyy.gbl import UTAP
 
 from cppyy.gbl import parseXTA
@@ -36,9 +37,6 @@ from cppyy.gbl import parseXMLFile
 from cppyy.gbl import parseExpression
 from cppyy.gbl import writeXMLFile
 
-from . import verify
-from . import path_analysis
-
 # TODO: Add useful functions, additional pythonizations
 
 # Import functions from a different file?
@@ -46,11 +44,12 @@ from . import path_analysis
 def stdlist_to_list(stdlist):
 	return [x for x in stdlist]
 
+
 # Returns the set of symbols in an expression
 def get_symbols(expression):
         res = set()
         if (expression.getSize() == 0):
-                if (expression.getKind() == Constants.IDENTIFIER):
+                if (expression.getKind() == UTAP.Constants.IDENTIFIER):
                         res.add(expression.toString())
                         return res
                 return res
@@ -60,10 +59,14 @@ def get_symbols(expression):
 
         return res
 
+
 # Change the value that the given expression has at a given index
-def change_expression_value(expression, newval, index=0):
+def change_expression_value(expression, newval, index=1):
         expression[index] = expression[index].createConstant(newval, expression.getPosition())
 
 # TODO: Implement compute clock constraints
 # TODO: Is path realizable
 # TODO: Is there a parameter valuation to make path realizable
+
+from . import verify
+from . import path_analysis
