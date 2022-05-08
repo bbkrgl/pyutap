@@ -17,6 +17,8 @@ Copy the patch to cloned libutap directory and apply with:
 
 Then build with the instructions specified in libutap's repository.
 
+#### Generating bindings:
+The install script takes care of this, but in case of building from source, run genbinding.py
 
 ### Install pyutap:
 Simply run:

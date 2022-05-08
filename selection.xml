@@ -1,0 +1,7 @@
+<lcgdict>
+	<!-- Etaler stuff -->
+	<struct pattern="UTAP::*" />
+	<function pattern="UTAP::*" />
+	<class pattern="UTAP::*" />
+	<enum pattern="UTAP::Constants::*" />
+</lcgdict>

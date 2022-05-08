@@ -1,5 +1,6 @@
 #TODO: Check dependencies
-
+import os
+from pathlib import Path
 import cppyy
 
 cppyy.add_library_path("/usr/lib")
@@ -9,24 +10,12 @@ cppyy.add_include_path("/usr/include/libxml2")
 
 cppyy.load_library("libutap")
 
-# TODO: Filter out unused ones, maybe include from a different file
-cppyy.include("utap/abstractbuilder.h")
-cppyy.include("utap/builder.h")
-cppyy.include("utap/common.h")
-cppyy.include("utap/expressionbuilder.h")
-cppyy.include("utap/expression.h")
-cppyy.include("utap/position.h")
-cppyy.include("utap/prettyprinter.h")
+src_dir = Path(__file__).parent.parent
+cppyy.load_reflection_info(os.path.join(src_dir, "rfiles/utap_rflx.so"))
+cppyy.add_autoload_map(os.path.join(src_dir, "rfiles/utap.rootmap"))
+
 cppyy.include("utap/signalflow.h")
-cppyy.include("utap/statementbuilder.h")
-cppyy.include("utap/statement.h")
-cppyy.include("utap/symbols.h")
-cppyy.include("utap/systembuilder.h")
-cppyy.include("utap/system.h")
-cppyy.include("utap/typechecker.h")
-cppyy.include("utap/type.h")
 cppyy.include("utap/utap.h")
-cppyy.include("utap/xmlwriter.h")
 
 
 from cppyy.gbl import UTAP

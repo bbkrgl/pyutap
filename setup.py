@@ -1,4 +1,13 @@
 from setuptools import find_packages, setup
+import os
+import subprocess
+
+class build_binding(build):
+    def run(self):
+        protoc_command = ["python3", os.path.join(src_dir, "genbinding.py")]
+        if subprocess.call(protoc_command) != 0:
+            sys.exit(-1)
+        build.run(self)
 
 setup(
     name="pyutap",
@@ -13,4 +22,8 @@ setup(
     ],
     packages=find_packages(),
     zip_safe=False,
-    include_package_data=True)
+    include_package_data=True,
+    cmdclass = {
+      'build': build_binding
+    },
+)
