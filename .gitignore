@@ -1,4 +1,4 @@
 .vscode/*
 pyutap/__pycache__/*
 test.ipynb
-rfiles
+pyutap/rfiles

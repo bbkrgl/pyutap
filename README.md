@@ -27,7 +27,7 @@ Simply run:
 
 
 #### TODOs:
-- Expose bindings in a faster and more useful way
+- ~Expose bindings in a faster and more useful way~ -> Done but not working as intended
 - Error handling, prevent crashing of the Python kernel completely
 - ~Run verifyta~ -> To be tested
 - Better and additional installation instructions, like installing in virtualenv

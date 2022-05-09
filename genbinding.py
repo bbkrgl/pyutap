@@ -90,11 +90,11 @@ except subprocess.CalledProcessError as e:
 else:
     print('compilation done')
 
-    if not os.path.exists('rfiles'):
-        os.mkdir('rfiles')
+    if not os.path.exists('pyutap/rfiles'):
+        os.mkdir('pyutap/rfiles')
 
-    os.rename('%s_rflx.so' % rfldct, 'rfiles/' + '%s_rflx.so' % rfldct)
+    os.rename('%s_rflx.so' % rfldct, 'pyutap/rfiles/' + '%s_rflx.so' % rfldct)
     os.rename('%s_rflx_rdict.pcm' %
-              rfldct, 'rfiles/' + '%s_rflx_rdict.pcm' % rfldct)
-    os.rename('%s.rootmap' % rfldct, 'rfiles/' + '%s.rootmap' % rfldct)
+              rfldct, 'pyutap/rfiles/' + '%s_rflx_rdict.pcm' % rfldct)
+    os.rename('%s.rootmap' % rfldct, 'pyutap/rfiles/' + '%s.rootmap' % rfldct)
     os.remove('%s_rflx.cpp' % rfldct)

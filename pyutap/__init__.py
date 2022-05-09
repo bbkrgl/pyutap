@@ -10,7 +10,7 @@ cppyy.add_include_path("/usr/include/libxml2")
 
 cppyy.load_library("libutap")
 
-src_dir = Path(__file__).parent.parent
+src_dir = Path(__file__).parent
 cppyy.load_reflection_info(os.path.join(src_dir, "rfiles/utap_rflx.so"))
 cppyy.add_autoload_map(os.path.join(src_dir, "rfiles/utap.rootmap"))
 
