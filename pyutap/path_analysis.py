@@ -19,13 +19,13 @@ def find_used_clocks(path):
             res = res.union(get_symbols(edge.guard))
         if edge.sync.usesClock():
             res = res.union(get_symbols(edge.sync))
-        if edge.src.invariant.usesClock():
+        if edge.src.invariant.usesClock(): # TODO: Check if symbols are not clocks
             res = res.union(get_symbols(edge.src.invariant))
 
-        return res
+    return res
 
 
-def is_path_realizable(template, path, initial_clock_vals=None):
+def is_path_realizable(path, initial_clock_vals=None):
     A = []
     B = []
 

@@ -49,6 +49,22 @@ def get_symbols(expression):
         return res
 
 
+# Get expressions in an UTAP expression object, which are represented in a very confusing manner
+def get_expression_list(expression):
+	if expression.getSize() == 0:
+		return []
+
+	if (expression.getKind() != UTAP.Constants.AND
+                and expression.getKind() != UTAP.Constants.OR
+                and expression.getKind() != UTAP.Constants.XOR
+                and expression.getKind() != UTAP.Constants.BIT_AND
+                and expression.getKind() != UTAP.Constants.BIT_OR
+                and expression.getKind() != UTAP.Constants.BIT_XOR):
+		return [expression]
+
+	return get_expression_list(expression[0]) + get_expression_list(expression[1])
+
+
 # Change the value that the given expression has at a given index
 def change_expression_value(expression, newval, index=1):
         expression[index] = expression[index].createConstant(newval, expression.getPosition())
