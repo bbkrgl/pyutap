@@ -45,7 +45,7 @@ def find_used_clocks(path):
 
 
 # TODO: Initial clock vals, parametric clock vals etc.
-def calculate_constraint_matrices(path):
+def calculate_constraint_matrices(path, initial_clock_vals=None):
     A = []
     B = []
     var_count = len(path)
@@ -53,34 +53,43 @@ def calculate_constraint_matrices(path):
     num_clocks = len(clocks)
 
     cumul_vars = [0] * num_clocks
+    if initial_clock_vals is not None:
+        cumul_vals = initial_clock_vals
+    else:
+        cumul_vals = [0] * num_clocks
+
     for i, edge in enumerate(path):
         src_exp_list = get_expression_list(edge.src.invariant)
         for exp in src_exp_list:
             if exp.usesClock():
                 cumul_var = cumul_vars[clocks.index(exp[0].toString())]
+                cumul_val = cumul_vals[clocks.index(exp[0].toString())]
                 a = [0 for _ in range(var_count)]
                 a[cumul_var:i+1] = [1 for _ in range(i - cumul_var + 1)]
                 A.append(a)
-                B.append(exp[1].getValue())
+                B.append(exp[1].getValue() - cumul_val)
 
         guard_exp_list = get_expression_list(edge.guard)
         for exp in guard_exp_list:
             if exp.usesClock():
                 cumul_var = cumul_vars[clocks.index(exp[0].toString())]
+                cumul_val = cumul_vals[clocks.index(exp[0].toString())]
                 a = [0 for _ in range(var_count)]
                 a[cumul_var:i+1] = [1 for _ in range(i - cumul_var + 1)]
                 A.append(a)
-                B.append(exp[1].getValue())
+                B.append(exp[1].getValue() - cumul_val)
 
         assign_exp_list = get_expression_list(edge.assign)
         for exp in assign_exp_list:
             if exp.usesClock():
                 cumul_vars[clocks.index(exp[0].toString())] = i
+                cumul_vals[clocks.index(exp[0].toString())] = exp[1].getValue()
+
     return A, B
 
 
 def is_path_realizable(path, initial_clock_vals=None):
-    A, B = calculate_constraint_matrices(path)
+    A, B = calculate_constraint_matrices(path, initial_clock_vals)
     var_count = len(path)
 
     solver = pywraplp.Solver("", pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING)
