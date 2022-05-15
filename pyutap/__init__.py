@@ -59,7 +59,8 @@ def get_expression_list(expression):
                 and expression.getKind() != UTAP.Constants.XOR
                 and expression.getKind() != UTAP.Constants.BIT_AND
                 and expression.getKind() != UTAP.Constants.BIT_OR
-                and expression.getKind() != UTAP.Constants.BIT_XOR):
+                and expression.getKind() != UTAP.Constants.BIT_XOR
+		and expression.getKind() != UTAP.Constants.COMMA): # TODO: Check whether there are other seperators
 		return [expression]
 
 	return get_expression_list(expression[0]) + get_expression_list(expression[1])
