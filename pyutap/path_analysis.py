@@ -45,48 +45,49 @@ def find_used_clocks(path):
 
 
 # TODO: Initial clock vals, parametric clock vals etc.
-def calculate_constraint_matrices(path, initial_clock_vals=None):
-    A = []
-    B = []
-    var_count = len(path)
-    clocks = list(find_used_clocks(path))
-    num_clocks = len(clocks)
+# Initial clock vals: {clock_name(str): value}
+def calculate_constraint_matrices(path, initial_clock_values=None):
+	A = []
+	B = []
+	var_count = len(path)
+	clocks = list(find_used_clocks(path))
+	num_clocks = len(clocks)
 
-    cumul_vars = [0] * num_clocks
-    if initial_clock_vals is not None:
-        cumul_vals = initial_clock_vals
-    else:
-        cumul_vals = [0] * num_clocks
+	cumul_vars = [0] * num_clocks
+	cumul_vals = {}
+	if initial_clock_values is not None:
+		cumul_vals = initial_clock_values
+	else:
+		cumul_vals = {clock: 0 for clock in clocks}
 
-    for i, edge in enumerate(path):
-        src_exp_list = get_expression_list(edge.src.invariant)
-        for exp in src_exp_list:
-            if exp.usesClock():
-                cumul_var = cumul_vars[clocks.index(exp[0].toString())]
-                cumul_val = cumul_vals[clocks.index(exp[0].toString())]
-                a = [0 for _ in range(var_count)]
-                a[cumul_var:i+1] = [1 for _ in range(i - cumul_var + 1)]
-                A.append(a)
-                B.append(exp[1].getValue() - cumul_val)
+	for i, edge in enumerate(path):
+		src_exp_list = get_expression_list(edge.src.invariant)
+		for exp in src_exp_list:
+			if exp.usesClock():
+				cumul_var = cumul_vars[clocks.index(exp[0].toString())]
+				cumul_val = cumul_vals[str(exp[0].toString())]
+				a = [0 for _ in range(var_count)]
+				a[cumul_var:i+1] = [1 for _ in range(i - cumul_var + 1)]
+				A.append(a)
+				B.append(exp[1].getValue() - cumul_val)
 
-        guard_exp_list = get_expression_list(edge.guard)
-        for exp in guard_exp_list:
-            if exp.usesClock():
-                cumul_var = cumul_vars[clocks.index(exp[0].toString())]
-                cumul_val = cumul_vals[clocks.index(exp[0].toString())]
-                a = [0 for _ in range(var_count)]
-                a[cumul_var:i+1] = [1 for _ in range(i - cumul_var + 1)]
-                A.append(a)
-                B.append(exp[1].getValue() - cumul_val)
+		guard_exp_list = get_expression_list(edge.guard)
+		for exp in guard_exp_list:
+			if exp.usesClock():
+				cumul_var = cumul_vars[clocks.index(exp[0].toString())]
+				cumul_val = cumul_vals[str(exp[0].toString())]
+				a = [0 for _ in range(var_count)]
+				a[cumul_var:i+1] = [1 for _ in range(i - cumul_var + 1)]
+				A.append(a)
+				B.append(exp[1].getValue() - cumul_val)
 
-        assign_exp_list = get_expression_list(edge.assign)
-        for exp in assign_exp_list:
-            if exp.usesClock():
-                cumul_vars[clocks.index(exp[0].toString())] = i
-                cumul_vals[clocks.index(exp[0].toString())] = exp[1].getValue()
+		assign_exp_list = get_expression_list(edge.assign)
+		for exp in assign_exp_list:
+			if exp.usesClock():
+				cumul_vars[clocks.index(exp[0].toString())] = i
+				cumul_vals[str(exp[0].toString())] = exp[1].getValue()
 
-    return A, B
-
+	return A, B
 
 def is_path_realizable(path, initial_clock_vals=None):
     A, B = calculate_constraint_matrices(path, initial_clock_vals)
@@ -98,8 +99,8 @@ def is_path_realizable(path, initial_clock_vals=None):
         c[j] = solver.NumVar(0, solver.infinity(), "x[%s]" % j)
     for i in range(len(A)):
         constraint = solver.RowConstraint(-solver.infinity(), B[i], "")
-    for j in range(var_count):
-        constraint.SetCoefficient(c[j], A[i][j])
+        for j in range(var_count):
+            constraint.SetCoefficient(c[j], A[i][j])
 
     status = solver.Solve()
     delays = []
