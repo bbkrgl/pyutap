@@ -4,11 +4,15 @@ Constants = UTAP.Constants
 
 
 # Checks if given path exists
-def path_exists(path):  # Path -> edge list
-    for i in range(1, len(path) - 1, 2):
-        if not (path[i - 1].dst.uid == path[i].src.uid and path[i].dst.uid == path[i + 1].src.uid):
+def path_exists(path):
+    if len(path) == 0:
+        return False
+    curr_dst = path[0].dst
+    for edge in path[1:]:
+        if not (curr_dst.uid == edge.src.uid):
             return False
-        return True
+        curr_dst = edge.dst
+    return True
 
 
 # Returns a path from state labels
@@ -27,6 +31,7 @@ def construct_path_from_labels(states, template):
 
         if not edge_found:
             return []
+
     return path
 
 

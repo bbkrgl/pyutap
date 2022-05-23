@@ -7,6 +7,7 @@ class TemplateHelper:
     def __init__(self, template):
         self.template = template
         self.isTA = template.isTA
+        self.initial_location = template.init
 
         # TODO: Apparently references are passed, but check to be sure
         self.instances = stdlist_to_list(template.instances)
